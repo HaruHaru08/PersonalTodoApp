@@ -20,6 +20,7 @@
         <th>Due Date</th>
         <th>Status</th>
         <th>Priority</th>
+        <th>Act</th>
     </tr>
     </thead>
     <tbody>
@@ -27,8 +28,13 @@
         <td th:text="${t.id}"></td>
         <td th:text="${t.content}"></td>
         <td th:text="${t.dueDate}"></td>
-        <td th:text="${t.status}"></td>
+        <td th:text="${t.status?'Hoàn Thành':'Chưa Hoàn Thành'}"></td>
         <td th:text="${t.priority}"></td>
+        <td>
+            <a th:href="@{/edit/{id}(id=${t.id})}" class="btn btn-primary" role="button">Sửa</a>
+            <a th:href="@{/delete/{id}(id=${t.id})}" class="btn btn-primary" role="button"
+            onclick="return confirm('Bạn có chắc muốn xóa task này không?')">Xóa</a>
+        </td>
     </tr>
     </tbody>
 </table>

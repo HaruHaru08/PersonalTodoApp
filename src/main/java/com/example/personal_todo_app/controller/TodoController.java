@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping
@@ -36,9 +33,31 @@ public class TodoController {
             BindingResult bindingResult
     ){
         if(bindingResult.hasErrors()){
-            return "form-add";
+            if(todo.getId() == null){
+                return "form-add";
+            }
+            return "form-edit";
         }
         repository.save(todo);
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEdit(@PathVariable(name = "id") Long id, Model model){
+        model.addAttribute("todo", repository.findById(id).get());
+        return "form-edit";
+    }
+    @PostMapping("/edit")
+    public String edit(@Valid @ModelAttribute(name = "todo") Todo todo, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "form-edit";
+        }
+        repository.save(todo);
+        return "redirect:/";
+    }
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable(name = "id") Long id) {
+        repository.deleteById(id);
         return "redirect:/";
     }
 }
