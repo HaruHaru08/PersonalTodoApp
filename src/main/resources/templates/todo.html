@@ -11,6 +11,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+<div style="color: #00ff00;background-color: #b3f4b3;width: 350px;margin: 10px;height: 30px;margin-left: 0;border-radius: 10px;text-align: center" th:if="${message}" th:text="${message}"></div>
 <a class="btn btn-primary" th:href="@{/add}" role="button">Add Todo</a>
 <table class="table table-striped">
     <thead class="thead-inverse">

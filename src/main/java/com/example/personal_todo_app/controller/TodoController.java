@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -30,7 +31,8 @@ public class TodoController {
     @PostMapping("/save")
     public String save(
             @Valid @ModelAttribute(name = "todo") Todo todo,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ){
         if(bindingResult.hasErrors()){
             if(todo.getId() == null){
@@ -39,6 +41,7 @@ public class TodoController {
             return "form-edit";
         }
         repository.save(todo);
+        redirectAttributes.addFlashAttribute("message", "Thao tac thanh cong!");
         return "redirect:/";
     }
 
@@ -48,16 +51,21 @@ public class TodoController {
         return "form-edit";
     }
     @PostMapping("/edit")
-    public String edit(@Valid @ModelAttribute(name = "todo") Todo todo, BindingResult bindingResult){
+    public String edit(@Valid @ModelAttribute(name = "todo") Todo todo,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "form-edit";
         }
         repository.save(todo);
+        redirectAttributes.addFlashAttribute("message", "Thao tac thanh cong!");
         return "redirect:/";
     }
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable(name = "id") Long id) {
+    public String delete(@PathVariable(name = "id") Long id,
+                         RedirectAttributes redirectAttributes) {
         repository.deleteById(id);
+        redirectAttributes.addFlashAttribute("message", "Thao tac thanh cong!");
         return "redirect:/";
     }
 }
