@@ -1,46 +1,65 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
+    <title th:text="#{todo.list.title}">Todo List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div style="color: #00ff00;background-color: #b3f4b3;width: 350px;margin: 10px;height: 30px;margin-left: 0;border-radius: 10px;text-align: center" th:if="${message}" th:text="${message}"></div>
-<a class="btn btn-primary" th:href="@{/add}" role="button">Add Todo</a>
-<table class="table table-striped">
-    <thead class="thead-inverse">
-    <tr>
-        <th>ID</th>
-        <th>Content</th>
-        <th>Due Date</th>
-        <th>Status</th>
-        <th>Priority</th>
-        <th>Act</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="t : ${todos}">
-        <td th:text="${t.id}"></td>
-        <td th:text="${t.content}"></td>
-        <td th:text="${t.dueDate}"></td>
-        <td th:text="${t.status?'Hoàn Thành':'Chưa Hoàn Thành'}"></td>
-        <td th:text="${t.priority}"></td>
-        <td>
-            <a th:href="@{/edit/{id}(id=${t.id})}" class="btn btn-primary" role="button">Sửa</a>
-            <a th:href="@{/delete/{id}(id=${t.id})}" class="btn btn-primary" role="button"
-            onclick="return confirm('Bạn có chắc muốn xóa task này không?')">Xóa</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="mb-1" th:text="#{todo.list.heading}">Todo List</h1>
+            <p class="mb-0 text-muted">
+                <span th:text="#{todo.owner.label}">List of:</span>
+                <strong th:text="${ownerName}">Owner</strong>
+            </p>
+        </div>
+        <div>
+            <a class="btn btn-outline-secondary btn-sm mr-2" th:href="@{/todos(lang='vi')}" th:text="#{language.vi}">Tiếng Việt</a>
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/todos(lang='en')}" th:text="#{language.en}">English</a>
+        </div>
+    </div>
+
+    <div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
+
+    <div class="mb-3">
+        <a class="btn btn-primary" th:href="@{/add}" th:text="#{todo.add}">Add Todo</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th th:text="#{todo.id}">ID</th>
+            <th th:text="#{todo.content}">Content</th>
+            <th th:text="#{todo.dueDate}">Due Date</th>
+            <th th:text="#{todo.status}">Status</th>
+            <th th:text="#{todo.priority}">Priority</th>
+            <th th:text="#{todo.actions}">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(todos)}">
+            <td colspan="6" class="text-center text-muted" th:text="#{todo.empty}">No todos yet.</td>
+        </tr>
+        <tr th:each="t : ${todos}">
+            <td th:text="${t.id}"></td>
+            <td th:text="${t.content}"></td>
+            <td th:text="${t.dueDate}"></td>
+            <td th:text="${t.status} ? #{todo.status.completed} : #{todo.status.pending}"></td>
+            <td th:text="${t.priority == T(com.example.personal_todo_app.model.Priority).HIGH} ? #{todo.priority.high} : (${t.priority == T(com.example.personal_todo_app.model.Priority).MEDIUM} ? #{todo.priority.medium} : #{todo.priority.low})"></td>
+            <td>
+                <a th:href="@{/edit/{id}(id=${t.id})}" class="btn btn-warning btn-sm" th:text="#{todo.edit}">Edit</a>
+                <a th:href="@{/delete/{id}(id=${t.id})}" class="btn btn-danger btn-sm"
+                   th:attr="onclick=|return confirm('${#messages.msg('todo.delete.confirm')}')|"
+                   th:text="#{todo.delete}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

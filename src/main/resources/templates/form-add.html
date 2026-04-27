@@ -1,47 +1,54 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Todo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="#{todo.form.addTitle}">Add Todo</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Add Todo</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0" th:text="#{todo.form.addHeading}">Add Todo</h1>
+        <div>
+            <a class="btn btn-outline-secondary btn-sm mr-2" th:href="@{/add(lang='vi')}" th:text="#{language.vi}">Tiếng Việt</a>
+            <a class="btn btn-outline-secondary btn-sm" th:href="@{/add(lang='en')}" th:text="#{language.en}">English</a>
+        </div>
+    </div>
 
     <form th:action="@{/save}" method="post" th:object="${todo}">
         <div class="form-group">
-            <label>Content</label>
-            <input type="text" class="form-control" th:field="*{content}" placeholder="Enter todo content">
+            <label for="content" th:text="#{todo.content}">Content</label>
+            <input id="content" type="text" class="form-control" th:field="*{content}"
+                   th:placeholder="#{todo.content.placeholder}">
             <p class="text-danger mt-1" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
         </div>
 
         <div class="form-group">
-            <label>Due Date</label>
-            <input type="date" class="form-control" th:field="*{dueDate}">
+            <label for="dueDate" th:text="#{todo.dueDate}">Due Date</label>
+            <input id="dueDate" type="date" class="form-control" th:field="*{dueDate}">
             <p class="text-danger mt-1" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></p>
         </div>
 
         <div class="form-group">
-            <label>Status</label>
-            <select class="form-control" th:field="*{status}">
-                <option th:value="false">Chua hoan thanh</option>
-                <option th:value="true">Hoan thanh</option>
+            <label for="status" th:text="#{todo.status}">Status</label>
+            <select id="status" class="form-control" th:field="*{status}">
+                <option th:value="false" th:text="#{todo.status.pending}">Pending</option>
+                <option th:value="true" th:text="#{todo.status.completed}">Completed</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label>Priority</label>
-            <select class="form-control" th:field="*{priority}">
-                <option th:value="${T(com.example.personal_todo_app.model.Priority).HIGH}">High</option>
-                <option th:value="${T(com.example.personal_todo_app.model.Priority).MEDIUM}">Medium</option>
-                <option th:value="${T(com.example.personal_todo_app.model.Priority).LOW}">Low</option>
+            <label for="priority" th:text="#{todo.priority}">Priority</label>
+            <select id="priority" class="form-control" th:field="*{priority}">
+                <option th:value="${T(com.example.personal_todo_app.model.Priority).HIGH}" th:text="#{todo.priority.high}">High</option>
+                <option th:value="${T(com.example.personal_todo_app.model.Priority).MEDIUM}" th:text="#{todo.priority.medium}">Medium</option>
+                <option th:value="${T(com.example.personal_todo_app.model.Priority).LOW}" th:text="#{todo.priority.low}">Low</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary" th:text="#{todo.save}">Save</button>
     </form>
 </div>
 </body>

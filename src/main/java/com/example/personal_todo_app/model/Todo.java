@@ -22,11 +22,11 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "{todo.content.notBlank}")
     @Column(name = "content")
     private String content;
 
-    @FutureOrPresent
+    @FutureOrPresent(message = "{todo.dueDate.futureOrPresent}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "due_date")
     private LocalDate dueDate;

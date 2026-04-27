@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="#{welcome.title}">Welcome</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-5" style="max-width: 540px;">
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-outline-secondary btn-sm mr-2" th:href="@{/(lang='vi')}" th:text="#{language.vi}">Tiếng Việt</a>
+        <a class="btn btn-outline-secondary btn-sm" th:href="@{/(lang='en')}" th:text="#{language.en}">English</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h1 class="h3 mb-3" th:text="#{welcome.heading}">Personal Todo App</h1>
+            <p class="text-muted" th:text="#{welcome.description}">Enter the owner name to start.</p>
+
+            <form th:action="@{/owner}" method="post" th:object="${ownerForm}">
+                <div class="form-group">
+                    <label for="name" th:text="#{welcome.ownerName}">Owner name</label>
+                    <input id="name" type="text" class="form-control" th:field="*{name}"
+                           th:placeholder="#{welcome.ownerPlaceholder}">
+                    <p class="text-danger mt-2" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                </div>
+                <button type="submit" class="btn btn-primary" th:text="#{welcome.submit}">Start</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
